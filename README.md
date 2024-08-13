@@ -1,4 +1,4 @@
-# Nano/Banano PoW Distributor
+# Nano PoW Distributor
 
 This project is a Flask-based web service that distributes Proof of Work (PoW) generation requests across multiple RPC endpoints for the Nano and Banano networks. The service can be customized to use different RPC URLs and provides a simple HTTP API for submitting PoW requests.
 
@@ -8,7 +8,7 @@ This project is a Flask-based web service that distributes Proof of Work (PoW) g
 - **Caching:** Implements an in-memory LRU (Least Recently Used) cache to store and reuse valid PoW results.
 - **Validation:** Integrates with `nanopy` to validate the work results received from the RPC servers.
 - **Retry Mechanism:** Automatically retries requests to RPC endpoints a configurable number of times if the initial attempts fail.
-- **Support for Nano and Banano:** This service can be used with both Nano and its forks, such as, the Banano network.
+- **Support for Nano and Banano:** This service can be used with Nano and its forks, such as, the Banano network.
 
 ## How It Works
 
@@ -75,6 +75,18 @@ This project is a Flask-based web service that distributes Proof of Work (PoW) g
    python app.py
    ```
 
+   Alternatively, you can run the service in the background using `nohup`:
+
+   ```bash
+   nohup python3 app.py </dev/null >/dev/null 2>&1 &
+   ```
+
+   Or simply use this (generates a nohup.out file):
+
+   ```bash
+   nohup python3 app.py &
+   ```
+
 6. **Access the API**
 
    The service will be accessible at `http://<HOST>:<PORT>/pow`. You can send a POST request to this endpoint with the following JSON body:
@@ -95,9 +107,10 @@ This project is a Flask-based web service that distributes Proof of Work (PoW) g
 
 ## Notes
 
-- Ensure the RPC URLs you use are trusted and reliable.
-- Adjust the cache size and retry attempts as needed based on your specific use case.
-- The service is designed to be flexible and can be customized for different environments and needs.
+- **Free RPCs:** You can use free RPCs from this list: [Public Nano Nodes](https://publicnodes.somenano.com/). However, it is advised to use a more reliable and dedicated solution for production environments. You can refer to this guide for better solutions: [Nano Work Generation Guide](https://docs.nano.org/integration-guides/work-generation/).
+- **RPC Reliability:** Ensure the RPC URLs you use are trusted and reliable.
+- **Custom Configuration:** Adjust the cache size and retry attempts as needed based on your specific use case.
+- **Service Flexibility:** The service is designed to be flexible and can be customized for different environments and needs.
 
 ## Contributing
 
