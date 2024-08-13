@@ -35,8 +35,8 @@ This project is a Flask-based web service that distributes Proof of Work (PoW) g
 1. **Clone the Repository**
 
    ```bash
-   git clone <repository_url>
-   cd <repository_directory>
+   git clone https://github.com/nano-trade/pow-distributor
+   cd pow-distributor
    ```
 
 2. **Create a Virtual Environment**
