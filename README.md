@@ -1,6 +1,6 @@
 # Nano PoW Distributor
 
-This project is a Flask-based web service that distributes Proof of Work (PoW) generation requests across multiple RPC endpoints for the Nano and Banano networks. The service can be customized to use different RPC URLs and provides a simple HTTP API for submitting PoW requests.
+This project is a Flask-based web service that distributes Proof of Work (PoW) generation requests across multiple RPC endpoints for the Nano and Banano networks. The service sends requests to all specified RPCs simultaneously and quickly returns the first valid response it receives, ensuring that the fastest available result is used. The service can be customized to use different RPC URLs and provides a simple HTTP API for submitting PoW requests.
 
 ## Features
 
@@ -8,7 +8,7 @@ This project is a Flask-based web service that distributes Proof of Work (PoW) g
 - **Caching:** Implements an in-memory LRU (Least Recently Used) cache to store and reuse valid PoW results.
 - **Validation:** Integrates with `nanopy` to validate the work results received from the RPC servers.
 - **Retry Mechanism:** Automatically retries requests to RPC endpoints a configurable number of times if the initial attempts fail.
-- **Support for Nano and Banano:** This service can be used with Nano and its forks, such as, the Banano network.
+- **Support for Nano and Banano:** This service can be used with both Nano and its forks, such as, the Banano network.
 
 ## How It Works
 
@@ -16,7 +16,8 @@ This project is a Flask-based web service that distributes Proof of Work (PoW) g
 2. **Handling Requests:** When a request is received at the `/pow` endpoint, the service:
    - Parses the `hash` and `difficulty` (optional) from the request body.
    - Checks if a valid PoW result for the provided `hash` is already cached.
-   - If not cached, it sends asynchronous requests to all specified RPC URLs.
+   - If not cached, it sends asynchronous requests to all specified RPC URLs **simultaneously**.
+   - The service returns the **first valid response** it receives from any of the RPCs, ensuring that the fastest valid result is used.
    - Validates the received work using `nanopy`.
    - Caches the result if valid and returns it to the client.
 3. **Retries:** If no valid work is obtained in the first attempt, the service retries up to a specified number of times (`max_attempts`).
@@ -81,7 +82,7 @@ This project is a Flask-based web service that distributes Proof of Work (PoW) g
    nohup python3 app.py </dev/null >/dev/null 2>&1 &
    ```
 
-   Or simply use this (generates a nohup.out file):
+   Or simply use this (generates a nohup.out file for logs):
 
    ```bash
    nohup python3 app.py &
